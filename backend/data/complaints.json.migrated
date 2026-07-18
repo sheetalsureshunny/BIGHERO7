@@ -1,0 +1,37 @@
+[
+  {
+    "id": "BH7-1002",
+    "description": "Deep pothole on Banerji Road near Kaloor metro pillar, two-wheelers swerving dangerously",
+    "category": "Road Infrastructure",
+    "location": {
+      "lat": 9.9927,
+      "lng": 76.2999
+    },
+    "image_url": null,
+    "status": "AI Verified",
+    "created_at": "2026-07-18T19:04:16.268530+00:00",
+    "ai": {
+      "category": "Road Infrastructure",
+      "department": "Public Works Department",
+      "severity": "High",
+      "priority_score": 65,
+      "safety_risk": "Moderate",
+      "estimated_resolution_time": "2 days",
+      "reason": "Road damage endangers vehicles and pedestrians.",
+      "recommended_action": "Send a road repair crew to patch the surface.",
+      "ai_mode": "fallback"
+    }
+  },
+  {
+    "id": "BH7-1001",
+    "description": "Test garbage pile near Aluva Metro Station entrance",
+    "category": "Garbage / Waste",
+    "location": {
+      "lat": 10.1076,
+      "lng": 76.3516
+    },
+    "image_url": "/uploads/8c0d4cc11d44437bbb6cb8be7950fb59.png",
+    "status": "Submitted",
+    "created_at": "2026-07-18T18:58:32.532174+00:00"
+  }
+]
