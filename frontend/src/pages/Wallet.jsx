@@ -32,10 +32,39 @@ export default function Wallet() {
     wallet.level.next_at != null
       ? Math.min((wallet.points / wallet.level.next_at) * 100, 100)
       : 100
+  const rideCost = wallet.ride_cost ?? 25
+  const pointsPerRide = Math.ceil(rideCost / wallet.conversion_rate)
+  const ticketsAvailable = Math.floor(wallet.metro_balance / rideCost)
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Smart Civic Wallet</h1>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div><h1 className="text-2xl font-bold">Civic Metro Pass</h1><p className="mt-1 text-sm text-sakura-100/60">Every verified civic action can power your next journey.</p></div>
+        <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">● KMRL Connected</span>
+      </div>
+
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-400 via-blue-600 to-indigo-950 p-6 shadow-xl shadow-sky-900/30 sm:p-8">
+        <div className="absolute -right-10 -top-16 h-56 w-56 rounded-full border-[28px] border-white/10" />
+        <div className="relative grid gap-6 sm:grid-cols-[1.4fr_.8fr] sm:items-end">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[.25em] text-white/70">Big Hero 7 · Civic rewards</p>
+            <p className="mt-7 text-3xl font-black tracking-tight text-white sm:text-4xl">KOCHI METRO PASS</p>
+            <p className="mt-1 font-mono text-sm tracking-[.18em] text-white/75">{wallet.id} · {wallet.name.toUpperCase()}</p>
+            <div className="mt-8 flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-full border border-white/40 bg-white/20 text-lg">◉</span><span className="text-sm font-medium text-white/85">Civic points become real ride value</span></div>
+          </div>
+          <div className="rounded-2xl border border-white/25 bg-plum-950/25 p-4 text-right backdrop-blur-sm">
+            <p className="text-xs uppercase tracking-wider text-white/65">Metro balance</p>
+            <p className="mt-1 text-4xl font-black text-white">₹{wallet.metro_balance.toFixed(2)}</p>
+            <p className="mt-3 text-sm text-white/80">{ticketsAvailable} ride {ticketsAvailable === 1 ? 'ticket' : 'tickets'} ready</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="grid gap-3 sm:grid-cols-3">
+        <div className="rounded-2xl border border-emerald-400/25 bg-emerald-400/10 p-4"><p className="text-2xl font-black text-emerald-300">{wallet.points}</p><p className="text-sm text-sakura-100/70">Civic Points earned</p></div>
+        <div className="rounded-2xl border border-sky-400/25 bg-sky-400/10 p-4"><p className="text-2xl font-black text-sky-200">{pointsPerRide}</p><p className="text-sm text-sakura-100/70">points unlock one ride</p></div>
+        <div className="rounded-2xl border border-sakura-300/25 bg-sakura-500/10 p-4"><p className="text-2xl font-black text-sakura-200">{Math.max(0, pointsPerRide - wallet.points)}</p><p className="text-sm text-sakura-100/70">points to next ride</p></div>
+      </section>
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="rounded-2xl border border-sakura-300/15 bg-plum-900/40 p-6 lg:col-span-2">
@@ -66,6 +95,13 @@ export default function Wallet() {
               </p>
               <p className="text-xs text-sakura-100/60">Metro Wallet</p>
             </div>
+          </div>
+
+          <div className="mt-6 flex items-center gap-4 rounded-2xl border border-sakura-300/15 bg-white/5 p-4">
+            <div className="grid h-14 w-14 place-items-center rounded-full" style={{ background: `conic-gradient(#ff7fae ${progress}%, rgba(255,255,255,.12) 0)` }}>
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-plum-900 text-xs font-bold">{Math.round(progress)}%</div>
+            </div>
+            <div><p className="font-semibold text-sakura-100">Next civic reward</p><p className="text-sm text-sakura-100/60">Keep verifying fixes to reach {wallet.level.next_at ?? wallet.points} points.</p></div>
           </div>
 
           {wallet.level.next_at != null && (
@@ -100,7 +136,7 @@ export default function Wallet() {
         <div className="space-y-4">
           <div className="rounded-2xl border border-sky-500/30 bg-sky-500/10 p-6">
             <div className="flex items-center justify-between">
-              <p className="font-semibold">Metro Card</p>
+              <p className="font-semibold">Turn points into tickets</p>
               <span className="text-sm text-emerald-400">
                 {wallet.metro_connected ? 'Connected' : 'Not connected'}
               </span>
@@ -124,7 +160,7 @@ export default function Wallet() {
                   type="submit"
                   className="shrink-0 rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium hover:bg-sky-600"
                 >
-                  Convert
+                  Add to pass
                 </button>
               </div>
             </form>

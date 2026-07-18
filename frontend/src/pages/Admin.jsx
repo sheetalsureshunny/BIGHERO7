@@ -49,7 +49,17 @@ export default function Admin() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold">Authority Dashboard</h1>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div><h1 className="text-2xl font-bold">Authority Dashboard</h1><p className="mt-1 text-sm text-sakura-100/55">Live operational view · refreshed when a status changes</p></div>
+        <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">● System live</span>
+      </div>
+
+      {queue.some((c) => c.priority?.level === 'CRITICAL') && (
+        <div className="flex items-center justify-between gap-4 rounded-2xl border border-red-400/35 bg-red-500/10 px-5 py-4">
+          <div><p className="font-bold text-red-300">Urgent attention required</p><p className="text-sm text-sakura-100/70">Critical civic issues are waiting in the priority queue.</p></div>
+          <span className="rounded-lg bg-red-500/20 px-3 py-2 font-mono text-sm text-red-200">ACT NOW</span>
+        </div>
+      )}
 
       {stats && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">

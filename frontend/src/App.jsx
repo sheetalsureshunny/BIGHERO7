@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from './lib/auth.jsx'
+import BaymaxAssistant from './components/BaymaxAssistant.jsx'
 
 const linkClass = ({ isActive }) =>
   `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -69,6 +70,7 @@ function App() {
       <main className="relative z-10 mx-auto max-w-5xl px-4 py-8">
         <Outlet />
       </main>
+      <BaymaxAssistant />
     </div>
   )
 }

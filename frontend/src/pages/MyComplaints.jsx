@@ -3,6 +3,39 @@ import { Link } from 'react-router-dom'
 import { getMyComplaints, verifyComplaint } from '../lib/api.js'
 import { SEVERITY_STYLES, STATUS_STYLES } from '../components/severity.js'
 
+const ACTION_STAGES = ['Submitted', 'AI Verified', 'Assigned', 'Work Started', 'Resolved', 'Citizen Verified']
+
+function ActionTracker({ complaint }) {
+  const current = ACTION_STAGES.indexOf(complaint.status)
+  const progress = current < 0 ? 1 : current
+  const label = complaint.status === 'Merged'
+    ? 'Your report is registered and linked to an existing municipal case.'
+    : current < 2
+      ? 'Your report is registered. Municipal assignment is pending.'
+      : current === 2
+        ? 'The municipality has acknowledged this issue and assigned it.'
+        : current === 3
+          ? 'Municipal work is in progress.'
+          : current >= 4
+            ? 'The municipality marked the work complete. Your verification helps close the loop.'
+            : 'Status is being updated.'
+
+  return (
+    <div className="mt-4 rounded-xl border border-sakura-300/15 bg-plum-950/40 p-3">
+      <div className="flex items-center justify-between gap-3"><p className="text-sm font-semibold text-sakura-100">Municipality action tracker</p><span className="text-xs text-sakura-100/45">Live status</span></div>
+      <p className="mt-1 text-xs text-sakura-100/65">{label}</p>
+      {complaint.status !== 'Merged' && <div className="mt-3 flex items-start justify-between gap-1">
+        {ACTION_STAGES.slice(0, 5).map((stage, i) => (
+          <div key={stage} className="flex flex-1 flex-col items-center gap-1 text-center">
+            <span className={`grid h-5 w-5 place-items-center rounded-full text-[10px] ${i <= progress ? 'bg-sakura-500 text-white' : 'bg-white/10 text-sakura-100/40'}`}>{i < progress ? '✓' : i + 1}</span>
+            <span className={`text-[10px] leading-tight ${i <= progress ? 'text-sakura-200' : 'text-sakura-100/35'}`}>{stage}</span>
+          </div>
+        ))}
+      </div>}
+    </div>
+  )
+}
+
 function VerifyBlock({ complaint, onDone }) {
   const [busy, setBusy] = useState(false)
   const [file, setFile] = useState(null)
@@ -53,9 +86,13 @@ function VerifyBlock({ complaint, onDone }) {
 
 export default function MyComplaints() {
   const [complaints, setComplaints] = useState(null)
+  const [lastChecked, setLastChecked] = useState(null)
 
   function refresh() {
-    getMyComplaints().then(setComplaints)
+    getMyComplaints().then((items) => {
+      setComplaints(items)
+      setLastChecked(new Date())
+    })
   }
 
   useEffect(refresh, [])
@@ -80,7 +117,11 @@ export default function MyComplaints() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">My Complaints</h1>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div><h1 className="text-2xl font-bold">My Complaints</h1><p className="mt-1 text-sm text-sakura-100/55">Revisit your reports and follow the municipality's response.</p></div>
+        <button onClick={refresh} className="rounded-lg border border-sakura-300/25 bg-white/5 px-3 py-2 text-sm text-sakura-100 hover:bg-white/10">Check municipality updates</button>
+      </div>
+      {lastChecked && <p className="-mt-2 text-xs text-sakura-100/40">Last checked {lastChecked.toLocaleTimeString()}</p>}
       {complaints.map((c) => (
         <div
           key={c.id}
@@ -130,6 +171,7 @@ export default function MyComplaints() {
                 ` · ${c.location.lat.toFixed(4)}, ${c.location.lng.toFixed(4)}`}
               {c.ai?.department && ` · ${c.ai.department}`}
             </p>
+            <ActionTracker complaint={c} />
             {c.status === 'Resolved' && (
               <VerifyBlock complaint={c} onDone={refresh} />
             )}

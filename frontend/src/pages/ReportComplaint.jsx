@@ -159,6 +159,11 @@ export default function ReportComplaint() {
         <p className="mt-1 text-sm text-sakura-100/60">
           Describe the problem, pin the location, add a photo. AI handles the rest.
         </p>
+        <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
+          {['1 Describe', '2 Pin location', '3 AI triage'].map((step, i) => (
+            <div key={step} className={`rounded-lg border px-3 py-2 ${i === 0 ? 'border-sakura-400/50 bg-sakura-500/15 text-sakura-200' : 'border-sakura-300/15 bg-white/5 text-sakura-100/50'}`}>{step}</div>
+          ))}
+        </div>
       </div>
 
       <div>
