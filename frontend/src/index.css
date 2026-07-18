@@ -1,0 +1,71 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --color-sakura-50: #fff5f8;
+  --color-sakura-100: #ffe4ee;
+  --color-sakura-200: #ffc9dd;
+  --color-sakura-300: #ffa8c9;
+  --color-sakura-400: #ff7fae;
+  --color-sakura-500: #f65b93;
+  --color-sakura-600: #d93b74;
+  --color-plum-900: #1a0d1a;
+  --color-plum-950: #100610;
+}
+
+:root {
+  --sakura-grid: rgba(255, 168, 201, 0.07);
+}
+
+/* Sakura-night base: deep plum gradient + soft pink grid overlay */
+body {
+  background-color: #140812;
+  background-image:
+    linear-gradient(rgba(255, 168, 201, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 168, 201, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 15% 10%, rgba(246, 91, 147, 0.18), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(120, 60, 140, 0.22), transparent 50%);
+  background-size:
+    32px 32px,
+    32px 32px,
+    100% 100%,
+    100% 100%;
+  background-attachment: fixed;
+  color: #f7e9f0;
+}
+
+/* Leaflet theming — dark plum popups + controls to match the app */
+.leaflet-container {
+  font-family: inherit;
+}
+
+.bh7-popup .leaflet-popup-content-wrapper {
+  background: rgba(16, 6, 16, 0.95);
+  color: #f7e9f0;
+  border: 1px solid rgba(255, 168, 201, 0.25);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.bh7-popup .leaflet-popup-content {
+  margin: 12px 14px;
+  line-height: 1.4;
+}
+
+.bh7-popup .leaflet-popup-tip {
+  background: rgba(16, 6, 16, 0.95);
+  border: 1px solid rgba(255, 168, 201, 0.25);
+}
+
+.bh7-popup a.leaflet-popup-close-button {
+  color: #ffa8c9;
+}
+
+.leaflet-control-attribution {
+  background: rgba(16, 6, 16, 0.7) !important;
+  color: rgba(255, 233, 240, 0.5) !important;
+}
+
+.leaflet-control-attribution a {
+  color: rgba(255, 168, 201, 0.7) !important;
+}
